@@ -109,6 +109,7 @@ const CatalogPage: FC = () => {
 	);
 
 	const handleChangeLimit = (newLimit: number) => {
+		handleScrollTop();
 		setLimit(newLimit);
 		setPage(1);
 		setProducts([]);
