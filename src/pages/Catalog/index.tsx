@@ -93,7 +93,7 @@ const CatalogPage: FC = () => {
 		setPage(1);
 		setProducts([]);
 		loadProducts(1, true, locale);
-	}, [locale, loadProducts]);
+	}, [loadProducts, locale]);
 
 	useEffect(() => {
 		const handleScroll = () => setScrollY(window.scrollY);
@@ -118,26 +118,24 @@ const CatalogPage: FC = () => {
 		loadProducts(1, true, locale);
 	};
 
-	// TODO: Tirar esse biome-ignore
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const handleLoadMore = useCallback(() => {
-		console.log("handleLoadMore");
 		if (products.length < totalItems) {
 			const nextPage = page + 1;
 			setPage(nextPage);
 			loadProducts(nextPage, false);
 		}
-	}, [page, products.length, totalItems]);
+	}, [page, products.length, totalItems, loadProducts]);
 
 	const handleScrollTop = useCallback(() => {
 		window.scrollTo({ top: 0, behavior: "smooth" });
 	}, []);
 
 	const handleResetPagination = useCallback(() => {
+		handleScrollTop();
 		setPage(1);
 		setProducts([]);
 		loadProducts(1, true, locale);
-	}, [loadProducts, locale]);
+	}, [handleScrollTop, loadProducts, locale]);
 
 	const handleOpenModal = (product: IProduct) => {
 		setSelectedProduct(product);
