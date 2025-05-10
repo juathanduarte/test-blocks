@@ -1,5 +1,6 @@
-import FloatingActionButton from "@/components/FloatingActionButton";
+import FloatingButton from "@/components/FloatingButton";
 import Spinner from "@/components/Spinner";
+import type { TLocale } from "@/models/Locale";
 import { useEffect, useRef, useState } from "react";
 import { FiCheck } from "react-icons/fi";
 
@@ -9,8 +10,8 @@ interface IInfiniteScroll {
 	isLoading: boolean;
 	loadingComponent?: React.ReactNode;
 	threshold?: number;
-	currentLocale?: string;
-	onLanguageChange?: (locale: string) => void;
+	currentLocale?: TLocale;
+	onLanguageChange?: (locale: TLocale) => void;
 	onScrollTop?: () => void;
 	onResetPagination?: () => void;
 }
@@ -37,7 +38,6 @@ export default function InfiniteScroll({
 				const [entry] = entries;
 
 				if (entry.isIntersecting && hasMore && !isLoading) {
-
 					onLoadMore();
 					setLoadCount((prev) => prev + 1);
 				}
@@ -84,7 +84,7 @@ export default function InfiniteScroll({
 				</div>
 			)}
 			{onLanguageChange && onScrollTop && onResetPagination && (
-				<FloatingActionButton
+				<FloatingButton
 					currentLocale={currentLocale}
 					onLanguageChange={onLanguageChange}
 					onScrollTop={onScrollTop}

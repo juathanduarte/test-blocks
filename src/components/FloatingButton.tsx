@@ -1,15 +1,16 @@
+import type { TLocale } from "@/models/Locale";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { FiChevronUp, FiGlobe, FiPlus, FiRefreshCw, FiX } from "react-icons/fi";
 
 interface LanguageOption {
-	value: string;
+	value: TLocale;
 	label: string;
 }
 
-interface FloatingActionButtonProps {
-	currentLocale: string;
-	onLanguageChange: (locale: string) => void;
+interface IFloatingButton {
+	currentLocale: TLocale;
+	onLanguageChange: (locale: TLocale) => void;
 	onScrollTop: () => void;
 	onResetPagination: () => void;
 }
@@ -20,14 +21,14 @@ const languages: LanguageOption[] = [
 	{ value: "es-es", label: "Español" },
 ];
 
-export default function FloatingActionButton({
+export default function FloatingButton({
 	currentLocale,
 	onLanguageChange,
 	onScrollTop,
 	onResetPagination,
-}: FloatingActionButtonProps) {
-	const [open, setOpen] = useState(false);
-	const [showLangs, setShowLangs] = useState(false);
+}: IFloatingButton) {
+	const [open, setOpen] = useState<boolean>(false);
+	const [showLangs, setShowLangs] = useState<boolean>(false);
 
 	return (
 		<div className="fixed z-50 bottom-8 right-8 flex flex-col items-end gap-3">
