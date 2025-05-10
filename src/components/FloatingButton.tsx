@@ -2,8 +2,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import type { CSSProperties, ReactNode } from "react";
 import { useState } from "react";
 import { FiX } from "react-icons/fi";
-import Tooltip from "./Tooltip";
 import { HiDotsHorizontal } from "react-icons/hi";
+import Tooltip from "./Tooltip";
 
 export interface IFloatingButton {
 	options: IOptionsFloatingButton[];
@@ -20,6 +20,7 @@ export interface IOptionsFloatingButton {
 	key: string;
 	buttonClassName?: string;
 	submenu?: ReactNode;
+	disabled?: boolean;
 }
 
 interface IPositionFloatingButton {
@@ -82,7 +83,7 @@ export default function FloatingButton({
 			<AnimatePresence>
 				{open &&
 					options.map((option, idx) => {
-						const tooltipVisible = openSubmenu !== option.key;
+						const tooltipVisible = openSubmenu !== option.key && !openSubmenu;
 						return (
 							<Tooltip
 								key={option.key}
@@ -100,28 +101,47 @@ export default function FloatingButton({
 										damping: 20,
 										delay: idx * 0.05,
 									}}
-									className={`w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center text-purple-700 hover:bg-purple-50 border border-purple-200 focus:outline-none ${option.buttonClassName || ""}`}
+									className={`w-14 h-14 rounded-full shadow-lg flex items-center justify-center border focus:outline-none transition-colors
+										${
+											option.disabled
+												? "bg-gray-100 border-gray-200 text-gray-300 cursor-not-allowed opacity-60"
+												: "bg-white text-purple-700 hover:bg-purple-50 border-purple-200"
+										}
+										${option.buttonClassName || ""}`}
 									onClick={() => handleOptionClick(option)}
 									aria-label={option.label}
 									type="button"
+									disabled={option.disabled}
 								>
 									{option.icon}
 								</motion.button>
-								{openSubmenu === option.key && option.submenu && (
-									<div className="absolute right-full mr-4 bottom-0 z-50">
-										<div className="relative">
-											<button
-												className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-800 focus:outline-none"
-												onClick={() => setOpenSubmenu(null)}
-												type="button"
-												aria-label="Fechar submenu"
-											>
-												<FiX size={20} />
-											</button>
-											{option.submenu}
-										</div>
-									</div>
-								)}
+								<AnimatePresence>
+									{openSubmenu === option.key && option.submenu && (
+										<motion.div
+											initial={{ opacity: 0, y: 20 }}
+											animate={{ opacity: 1, y: 0 }}
+											exit={{ opacity: 0, y: 20 }}
+											transition={{
+												type: "spring",
+												stiffness: 300,
+												damping: 24,
+											}}
+											className="absolute right-full bottom-0 z-50 pt-2 pr-2 pb-2"
+										>
+											<div className="relative">
+												<button
+													className="absolute -top-2 -right-2 w-6 h-6 flex items-center justify-center text-gray-500 hover:text-gray-800 focus:outline-none bg-white rounded-full shadow"
+													onClick={() => setOpenSubmenu(null)}
+													type="button"
+													aria-label="Fechar submenu"
+												>
+													<FiX size={20} />
+												</button>
+												{option.submenu}
+											</div>
+										</motion.div>
+									)}
+								</AnimatePresence>
 							</Tooltip>
 						);
 					})}

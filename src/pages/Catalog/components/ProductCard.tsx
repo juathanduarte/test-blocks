@@ -16,7 +16,9 @@ const ProductCard: FC<IProductCard> = ({
 	page = 1,
 }) => {
 	const getFamilyImageUrl = (familyId: string) => {
-		return `https://plugin-storage.nyc3.digitaloceanspaces.com/families/images/${familyId}.webp`;
+		const url = `https://plugin-storage.nyc3.digitaloceanspaces.com/families/images/${familyId}.webp`;
+
+		return url;
 	};
 
 	const handleClick = () => {

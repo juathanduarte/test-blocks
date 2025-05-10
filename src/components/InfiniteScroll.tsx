@@ -1,4 +1,4 @@
-import Spinner from "@/components/Spinner";
+import Loading from "@/components/Loading";
 import { useEffect, useRef, useState } from "react";
 import { FiCheck } from "react-icons/fi";
 
@@ -64,7 +64,7 @@ export default function InfiniteScroll({
 		>
 			{isLoading && loadingComponent
 				? loadingComponent
-				: isLoading && <Spinner message={getLoadingMessage()} />}
+				: isLoading && <Loading message={getLoadingMessage()} />}
 			{!isLoading && !hasMore && (
 				<div className="text-gray-600 py-4 px-6 bg-white rounded-lg shadow-sm border border-gray-200 flex items-center space-x-3">
 					<FiCheck className="h-5 w-5 text-primary" aria-hidden="true" />

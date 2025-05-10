@@ -1,14 +1,15 @@
+import Button from "@/components/Button";
 import FloatingButton, {
 	type IOptionsFloatingButton,
 } from "@/components/FloatingButton";
 import Header from "@/components/Header";
 import InfiniteScroll from "@/components/InfiniteScroll";
-import ProductCard from "@/components/ProductCard";
 import type { TLocale } from "@/models/Locale";
 import type { IApiResponse, IProduct } from "@models/Product";
 import { fetchProducts } from "@services/apiFamilies";
 import { type FC, useCallback, useEffect, useRef, useState } from "react";
 import { FiChevronUp, FiGlobe, FiList, FiRefreshCw } from "react-icons/fi";
+import ProductCard from "./components/ProductCard";
 
 const CatalogPage: FC = () => {
 	const [products, setProducts] = useState<IProduct[]>([]);
@@ -19,6 +20,7 @@ const CatalogPage: FC = () => {
 	const [limit, setLimit] = useState<number>(8);
 	const [locale, setLocale] = useState<TLocale>("pt-br");
 	const hasInitiallyLoaded = useRef<boolean>(false);
+	const [scrollY, setScrollY] = useState<number>(0);
 
 	const loadProducts = useCallback(
 		async (
@@ -71,6 +73,13 @@ const CatalogPage: FC = () => {
 		loadProducts(1, true, locale);
 	}, [locale, loadProducts]);
 
+	useEffect(() => {
+		const handleScroll = () => setScrollY(window.scrollY);
+		window.addEventListener("scroll", handleScroll);
+		handleScroll();
+		return () => window.removeEventListener("scroll", handleScroll);
+	}, []);
+
 	const handleLanguageChange = useCallback(
 		(newLocale: TLocale) => {
 			if (newLocale !== locale) {
@@ -115,6 +124,7 @@ const CatalogPage: FC = () => {
 			onClick: handleResetPagination,
 			label: "Resetar paginação",
 			title: "Resetar a paginação",
+			disabled: page === 1,
 		},
 		{
 			key: "scrollTop",
@@ -122,6 +132,7 @@ const CatalogPage: FC = () => {
 			onClick: handleScrollTop,
 			label: "Ir para o topo",
 			title: "Voltar ao topo da página",
+			disabled: scrollY === 0,
 		},
 		{
 			key: "lang",
@@ -130,27 +141,24 @@ const CatalogPage: FC = () => {
 			title: "Alterar idioma do catálogo",
 			submenu: (
 				<div className="bg-white border border-purple-200 rounded-xl shadow-lg p-4 z-50 flex flex-col gap-2 min-w-[180px]">
-					<button
-						className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors w-full text-left ${locale === "pt-br" ? "bg-purple-100 text-purple-800" : "text-gray-700 hover:bg-purple-50"}`}
+					<Button
+						variant={locale === "pt-br" ? "default" : "outlined"}
+						icon={<FiGlobe />}
+						label="Português"
 						onClick={() => handleLanguageChange("pt-br")}
-						type="button"
-					>
-						<FiGlobe className="text-purple-600" /> Português
-					</button>
-					<button
-						className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors w-full text-left ${locale === "en-us" ? "bg-purple-100 text-purple-800" : "text-gray-700 hover:bg-purple-50"}`}
+					/>
+					<Button
+						variant={locale === "en-us" ? "default" : "outlined"}
+						icon={<FiGlobe />}
+						label="English"
 						onClick={() => handleLanguageChange("en-us")}
-						type="button"
-					>
-						<FiGlobe className="text-purple-600" /> English
-					</button>
-					<button
-						className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors w-full text-left ${locale === "es-es" ? "bg-purple-100 text-purple-800" : "text-gray-700 hover:bg-purple-50"}`}
+					/>
+					<Button
+						variant={locale === "es-es" ? "default" : "outlined"}
+						icon={<FiGlobe />}
+						label="Español"
 						onClick={() => handleLanguageChange("es-es")}
-						type="button"
-					>
-						<FiGlobe className="text-purple-600" /> Español
-					</button>
+					/>
 				</div>
 			),
 		},
@@ -162,14 +170,12 @@ const CatalogPage: FC = () => {
 			submenu: (
 				<div className="bg-white border border-purple-200 rounded-xl shadow-lg p-4 z-50 flex flex-col gap-2 min-w-[140px]">
 					{[4, 8, 12, 16, 20].map((value) => (
-						<button
+						<Button
 							key={value}
-							className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors w-full text-left ${limit === value ? "bg-purple-100 text-purple-800" : "text-gray-700 hover:bg-purple-50"}`}
+							variant={limit === value ? "default" : "outlined"}
+							label={`${value} itens`}
 							onClick={() => handleChangeLimit(value)}
-							type="button"
-						>
-							{value} itens
-						</button>
+						/>
 					))}
 				</div>
 			),
