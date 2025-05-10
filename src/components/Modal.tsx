@@ -20,7 +20,7 @@ export default function Modal({ open, onClose, children }: IModal) {
 					onClick={onClose}
 				>
 					<motion.div
-						className="relative bg-white rounded-2xl shadow-2xl border border-purple-200 max-w-lg w-full mx-4 p-8"
+						className="relative bg-white rounded-2xl shadow-2xl border border-purple-200 max-w-lg w-full mx-4 p-8 max-h-[95vh] overflow-y-auto"
 						initial={{ scale: 0.92, y: 40, opacity: 0 }}
 						animate={{ scale: 1, y: 0, opacity: 1 }}
 						exit={{ scale: 0.92, y: 40, opacity: 0 }}
@@ -28,7 +28,7 @@ export default function Modal({ open, onClose, children }: IModal) {
 						onClick={(e) => e.stopPropagation()}
 					>
 						<button
-							className="absolute top-4 right-4 text-gray-400 hover:text-purple-700 transition-colors text-xl font-bold focus:outline-none"
+							className="absolute top-4 right-4 text-grayr-400 hover:text-purple-700 transition-colors text-xl font-bold focus:outline-none"
 							onClick={onClose}
 							aria-label="Fechar modal"
 							type="button"

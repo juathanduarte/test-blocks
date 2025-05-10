@@ -3,7 +3,9 @@ import FloatingButton, {
 	type IOptionsFloatingButton,
 } from "@/components/FloatingButton";
 import Header from "@/components/Header";
+import ImagePreview from "@/components/ImagePreview";
 import InfiniteScroll from "@/components/InfiniteScroll";
+import Modal from "@/components/Modal";
 import { useLocale } from "@/contexts/LocaleContext";
 import { useToast } from "@/contexts/ToastContext";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -12,7 +14,13 @@ import type { IApiResponse, IProduct } from "@models/Product";
 import { fetchProducts } from "@services/apiFamilies";
 import { type FC, useCallback, useEffect, useRef, useState } from "react";
 import { FiChevronUp, FiGlobe, FiList, FiRefreshCw } from "react-icons/fi";
+import BodyModal from "./components/BodyModal";
 import ProductCard from "./components/ProductCard";
+
+export interface IImageToPreview {
+	url: string;
+	alt?: string;
+}
 
 const CatalogPage: FC = () => {
 	const [products, setProducts] = useState<IProduct[]>([]);
@@ -26,6 +34,12 @@ const CatalogPage: FC = () => {
 	const [scrollY, setScrollY] = useState<number>(0);
 	const { t } = useTranslation(locale);
 	const { showToast } = useToast();
+	const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
+	const [modalOpen, setModalOpen] = useState<boolean>(false);
+	const [imageViewerOpen, setImageViewerOpen] = useState<boolean>(false);
+	const [imageToPreview, setImageToPreview] = useState<IImageToPreview | null>(
+		null,
+	);
 
 	const loadProducts = useCallback(
 		async (
@@ -125,6 +139,16 @@ const CatalogPage: FC = () => {
 		loadProducts(1, true, locale);
 	}, [loadProducts, locale]);
 
+	const handleOpenModal = (product: IProduct) => {
+		setSelectedProduct(product);
+		setModalOpen(true);
+	};
+
+	const handleCloseModal = () => {
+		setModalOpen(false);
+		setTimeout(() => setSelectedProduct(null), 200);
+	};
+
 	const optionsFloatingButton: IOptionsFloatingButton[] = [
 		{
 			key: "reset",
@@ -205,7 +229,20 @@ const CatalogPage: FC = () => {
 								<ProductCard key={`skeleton-${Math.random()}`} loading />
 							))
 						: products.map((product) => (
-								<ProductCard key={product.id} product={product} page={page} />
+								<ProductCard
+									key={product.id}
+									product={product}
+									page={page}
+									onClick={handleOpenModal}
+									onImageClick={() => {
+										setImageToPreview({
+											url: `https://plugin-storage.nyc3.digitaloceanspaces.com/families/images/${product.id}.webp`,
+											alt: product.details.name,
+										});
+										setImageViewerOpen(true);
+									}}
+									imagePreviewIconOverlay={true}
+								/>
 							))}
 				</div>
 
@@ -223,6 +260,22 @@ const CatalogPage: FC = () => {
 					position={{ bottom: 32, right: 32 }}
 				/>
 			</div>
+
+			<Modal open={modalOpen} onClose={handleCloseModal}>
+				{selectedProduct && (
+					<BodyModal
+						selectedProduct={selectedProduct}
+						setImageToPreview={setImageToPreview}
+						setImageViewerOpen={setImageViewerOpen}
+					/>
+				)}
+			</Modal>
+			<ImagePreview
+				open={imageViewerOpen}
+				onClose={() => setImageViewerOpen(false)}
+				imageUrl={imageToPreview?.url || ""}
+				imageAlt={imageToPreview?.alt}
+			/>
 		</div>
 	);
 };
