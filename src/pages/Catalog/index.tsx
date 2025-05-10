@@ -112,7 +112,6 @@ const CatalogPage: FC = () => {
 		setLimit(newLimit);
 		setPage(1);
 		setProducts([]);
-		loadProducts(1, true, locale);
 	};
 
 	const handleLoadMore = useCallback(() => {
