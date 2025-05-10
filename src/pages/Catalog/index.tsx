@@ -11,7 +11,7 @@ import { useToast } from "@/contexts/ToastContext";
 import { useTranslation } from "@/hooks/useTranslation";
 import type { TLocale } from "@/models/Locale";
 import type { IApiResponse, IProduct } from "@models/Product";
-import { fetchProducts } from "@services/apiFamilies";
+import { fetchProducts } from "@services/products/apiProducts";
 import { type FC, useCallback, useEffect, useRef, useState } from "react";
 import { FiChevronUp, FiGlobe, FiList, FiRefreshCw } from "react-icons/fi";
 import BodyModal from "./components/BodyModal";
