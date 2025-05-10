@@ -1,4 +1,7 @@
 import Loading from "@/components/Loading";
+import { useLocale } from "@/contexts/LocaleContext";
+import { getLoadingMessage } from "@/helpers/getLoadingMessage";
+import { useTranslation } from "@/hooks/useTranslation";
 import { useEffect, useRef, useState } from "react";
 import { FiCheck } from "react-icons/fi";
 
@@ -19,6 +22,8 @@ export default function InfiniteScroll({
 }: IInfiniteScroll) {
 	const loaderRef = useRef<HTMLDivElement>(null);
 	const [loadCount, setLoadCount] = useState<number>(0);
+	const { locale } = useLocale();
+	const { t } = useTranslation(locale);
 
 	useEffect(() => {
 		const currentLoaderRef = loaderRef.current;
@@ -50,13 +55,6 @@ export default function InfiniteScroll({
 		};
 	}, [onLoadMore, hasMore, isLoading, threshold]);
 
-	const getLoadingMessage = () => {
-		if (loadCount < 2) return "Carregando mais itens...";
-		if (loadCount < 4) return "Buscando mais famílias...";
-		if (loadCount < 6) return "Quase lá, mais produtos chegando...";
-		return "Continuamos buscando mais produtos para você...";
-	};
-
 	return (
 		<div
 			ref={loaderRef}
@@ -64,7 +62,14 @@ export default function InfiniteScroll({
 		>
 			{isLoading && loadingComponent
 				? loadingComponent
-				: isLoading && <Loading message={getLoadingMessage()} />}
+				: isLoading && (
+						<Loading
+							message={getLoadingMessage(
+								loadCount,
+								t as (key: string) => string,
+							)}
+						/>
+					)}
 			{!isLoading && !hasMore && (
 				<div className="text-gray-600 py-4 px-6 bg-white rounded-lg shadow-sm border border-gray-200 flex items-center space-x-3">
 					<FiCheck className="h-5 w-5 text-primary" aria-hidden="true" />

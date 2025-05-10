@@ -1,11 +1,44 @@
 {
 	"pt-br": {
-		"headerTitle": "Teste Técnico"
+		"headerTitle": "Teste Técnico",
+		"toastSuccessLoadProducts": "Produtos carregados com sucesso!",
+		"toastErrorLoadProducts": "Erro ao carregar produtos.",
+		"loadingMoreProducts1": "Carregando mais produtos...",
+		"loadingMoreProducts2": "Buscando mais produtos...",
+		"loadingMoreProducts3": "Quase lá, mais produtos chegando...",
+		"loadingMoreProducts4": "Continuamos buscando mais produtos para você...",
+		"tooltipResetPagination": "Resetar a paginação",
+		"tooltipScrollTop": "Voltar ao topo da página",
+		"tooltipChangeLanguage": "Alterar idioma do catálogo",
+		"tooltipChangeLimit": "Alterar quantidade de itens por página",
+		"itemPlural": "itens"
 	},
 	"en-us": {
-		"headerTitle": "Technical Test"
+		"headerTitle": "Technical Test",
+		"toastSuccessLoadProducts": "Products loaded successfully!",
+		"toastErrorLoadProducts": "Error loading products.",
+		"loadingMoreProducts1": "Loading more products...",
+		"loadingMoreProducts2": "Fetching more products...",
+		"loadingMoreProducts3": "Almost there, more products coming...",
+		"loadingMoreProducts4": "We keep searching for more products for you...",
+		"tooltipResetPagination": "Reset pagination",
+		"tooltipScrollTop": "Back to top of the page",
+		"tooltipChangeLanguage": "Change catalog language",
+		"tooltipChangeLimit": "Change items per page",
+		"itemPlural": "items"
 	},
 	"es-es": {
-		"headerTitle": "Prueba técnica"
+		"headerTitle": "Prueba técnica",
+		"toastSuccessLoadProducts": "¡Productos cargados con éxito!",
+		"toastErrorLoadProducts": "Error al cargar productos.",
+		"loadingMoreProducts1": "Cargando más productos...",
+		"loadingMoreProducts2": "Buscando más productos...",
+		"loadingMoreProducts3": "Casi listo, más productos en camino...",
+		"loadingMoreProducts4": "Seguimos buscando más productos para ti...",
+		"tooltipResetPagination": "Restablecer la paginación",
+		"tooltipScrollTop": "Volver al principio de la página",
+		"tooltipChangeLanguage": "Cambiar el idioma del catálogo",
+		"tooltipChangeLimit": "Cambiar cantidad de ítems por página",
+		"itemPlural": "ítems"
 	}
 }

@@ -5,6 +5,7 @@ import FloatingButton, {
 import Header from "@/components/Header";
 import InfiniteScroll from "@/components/InfiniteScroll";
 import { useLocale } from "@/contexts/LocaleContext";
+import { useToast } from "@/contexts/ToastContext";
 import { useTranslation } from "@/hooks/useTranslation";
 import type { TLocale } from "@/models/Locale";
 import type { IApiResponse, IProduct } from "@models/Product";
@@ -24,6 +25,7 @@ const CatalogPage: FC = () => {
 	const hasInitiallyLoaded = useRef<boolean>(false);
 	const [scrollY, setScrollY] = useState<number>(0);
 	const { t } = useTranslation(locale);
+	const { showToast } = useToast();
 
 	const loadProducts = useCallback(
 		async (
@@ -56,8 +58,11 @@ const CatalogPage: FC = () => {
 				}
 
 				setTotalItems(response.total || 0);
+
+				showToast(t("toastSuccessLoadProducts"), "success");
 			} catch (error) {
 				console.error("Erro ao carregar produtos", error);
+				showToast(t("toastErrorLoadProducts"), "error");
 			} finally {
 				if (isInitialLoad) {
 					setInitialLoading(false);
@@ -67,7 +72,7 @@ const CatalogPage: FC = () => {
 				}
 			}
 		},
-		[limit, locale],
+		[limit, locale, showToast, t],
 	);
 
 	useEffect(() => {
@@ -125,23 +130,23 @@ const CatalogPage: FC = () => {
 			key: "reset",
 			icon: <FiRefreshCw size={26} />,
 			onClick: handleResetPagination,
-			label: "Resetar paginação",
-			title: "Resetar a paginação",
+			label: t("tooltipResetPagination"),
+			title: t("tooltipResetPagination"),
 			disabled: page === 1,
 		},
 		{
 			key: "scrollTop",
 			icon: <FiChevronUp size={28} />,
 			onClick: handleScrollTop,
-			label: "Ir para o topo",
-			title: "Voltar ao topo da página",
+			label: t("tooltipScrollTop"),
+			title: t("tooltipScrollTop"),
 			disabled: scrollY === 0,
 		},
 		{
 			key: "lang",
 			icon: <FiGlobe size={26} />,
-			label: "Trocar idioma",
-			title: "Alterar idioma do catálogo",
+			label: t("tooltipChangeLanguage"),
+			title: t("tooltipChangeLanguage"),
 			submenu: (
 				<div className="bg-white border border-purple-200 rounded-xl shadow-lg p-4 z-50 flex flex-col gap-2 min-w-[180px]">
 					<Button
@@ -168,15 +173,15 @@ const CatalogPage: FC = () => {
 		{
 			key: "limit",
 			icon: <FiList size={24} />,
-			label: "Limite",
-			title: "Alterar quantidade de itens por página",
+			label: t("tooltipChangeLimit"),
+			title: t("tooltipChangeLimit"),
 			submenu: (
 				<div className="bg-white border border-purple-200 rounded-xl shadow-lg p-4 z-50 flex flex-col gap-2 min-w-[140px]">
 					{[4, 8, 12, 16, 20].map((value) => (
 						<Button
 							key={value}
 							variant={limit === value ? "default" : "outlined"}
-							label={`${value} itens`}
+							label={`${value} ${t("itemPlural")}`}
 							onClick={() => handleChangeLimit(value)}
 						/>
 					))}
