@@ -4,6 +4,8 @@ import FloatingButton, {
 } from "@/components/FloatingButton";
 import Header from "@/components/Header";
 import InfiniteScroll from "@/components/InfiniteScroll";
+import { useLocale } from "@/contexts/LocaleContext";
+import { useTranslation } from "@/hooks/useTranslation";
 import type { TLocale } from "@/models/Locale";
 import type { IApiResponse, IProduct } from "@models/Product";
 import { fetchProducts } from "@services/apiFamilies";
@@ -18,9 +20,10 @@ const CatalogPage: FC = () => {
 	const [page, setPage] = useState<number>(1);
 	const [totalItems, setTotalItems] = useState<number>(0);
 	const [limit, setLimit] = useState<number>(8);
-	const [locale, setLocale] = useState<TLocale>("pt-br");
+	const { locale, setLocale } = useLocale();
 	const hasInitiallyLoaded = useRef<boolean>(false);
 	const [scrollY, setScrollY] = useState<number>(0);
+	const { t } = useTranslation(locale);
 
 	const loadProducts = useCallback(
 		async (
@@ -86,7 +89,7 @@ const CatalogPage: FC = () => {
 				setLocale(newLocale);
 			}
 		},
-		[locale],
+		[locale, setLocale],
 	);
 
 	const handleChangeLimit = (newLimit: number) => {
@@ -189,16 +192,7 @@ const CatalogPage: FC = () => {
 	return (
 		<div className="min-h-screen bg-[#fbfbfb]">
 			<div className="pt-24">
-				<Header
-					title={
-						locale === "pt-br"
-							? "Teste Técnico"
-							: locale === "en-us"
-								? "Technical Test"
-								: "Prueba técnica"
-					}
-					description="Juathan Coelho Duarte"
-				/>
+				<Header title={t("headerTitle")} description="Juathan Coelho Duarte" />
 
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
 					{shouldShowSkeletons
