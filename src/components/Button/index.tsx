@@ -1,5 +1,5 @@
 import type { ButtonHTMLAttributes, CSSProperties, ReactNode } from "react";
-import Spinner from "./Spinner";
+import Spinner from "../Spinner";
 export type TButtonVariant = "default" | "outlined" | "error";
 
 interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {

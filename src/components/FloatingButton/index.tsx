@@ -3,7 +3,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { useState } from "react";
 import { FiX } from "react-icons/fi";
 import { HiDotsHorizontal } from "react-icons/hi";
-import Tooltip from "./Tooltip";
+import Tooltip from "../Tooltip";
 
 export interface IFloatingButton {
 	options: IOptionsFloatingButton[];

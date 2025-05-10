@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import Spinner from "./Spinner";
+import Spinner from "../Spinner";
 
 interface ILoading {
 	message?: string;
