@@ -102,6 +102,7 @@ src/
 - **Axios:** Para requisições HTTP
 - **React Testing Library:** Para testes de componentes com foco em comportamento do usuário
 - **Biome:** Ferramenta de linting rápida e moderna utilizada para padronização e análise estática do código
+- **Componentes manuais:** Todos os componentes da interface foram implementados manualmente, sem uso de bibliotecas prontas de UI, a fim de demonstrar domínio técnico e conhecimento em React e CSS.
 
 ## Deploy
 
