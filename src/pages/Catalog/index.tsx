@@ -1,9 +1,14 @@
+import FloatingButton, {
+	type IOptionsFloatingButton,
+} from "@/components/FloatingButton";
 import Header from "@/components/Header";
 import InfiniteScroll from "@/components/InfiniteScroll";
 import ProductCard from "@/components/ProductCard";
+import type { TLocale } from "@/models/Locale";
 import type { IApiResponse, IProduct } from "@models/Product";
 import { fetchProducts } from "@services/apiFamilies";
 import { type FC, useCallback, useEffect, useRef, useState } from "react";
+import { FiChevronUp, FiGlobe, FiList, FiRefreshCw } from "react-icons/fi";
 
 const CatalogPage: FC = () => {
 	const [products, setProducts] = useState<IProduct[]>([]);
@@ -11,8 +16,8 @@ const CatalogPage: FC = () => {
 	const [loadingMore, setLoadingMore] = useState<boolean>(false);
 	const [page, setPage] = useState<number>(1);
 	const [totalItems, setTotalItems] = useState<number>(0);
-	const [limit] = useState<number>(8);
-	const [locale, setLocale] = useState<string>("pt-br");
+	const [limit, setLimit] = useState<number>(8);
+	const [locale, setLocale] = useState<TLocale>("pt-br");
 	const hasInitiallyLoaded = useRef<boolean>(false);
 
 	const loadProducts = useCallback(
@@ -67,7 +72,7 @@ const CatalogPage: FC = () => {
 	}, [locale, loadProducts]);
 
 	const handleLanguageChange = useCallback(
-		(newLocale: string) => {
+		(newLocale: TLocale) => {
 			if (newLocale !== locale) {
 				setLocale(newLocale);
 			}
@@ -75,6 +80,15 @@ const CatalogPage: FC = () => {
 		[locale],
 	);
 
+	const handleChangeLimit = (newLimit: number) => {
+		setLimit(newLimit);
+		setPage(1);
+		setProducts([]);
+		loadProducts(1, true, locale);
+	};
+
+	// TODO: Tirar esse biome-ignore
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const handleLoadMore = useCallback(() => {
 		console.log("handleLoadMore");
 		if (products.length < totalItems) {
@@ -94,14 +108,81 @@ const CatalogPage: FC = () => {
 		loadProducts(1, true, locale);
 	}, [loadProducts, locale]);
 
+	const optionsFloatingButton: IOptionsFloatingButton[] = [
+		{
+			key: "reset",
+			icon: <FiRefreshCw size={26} />,
+			onClick: handleResetPagination,
+			label: "Resetar paginação",
+			title: "Resetar a paginação",
+		},
+		{
+			key: "scrollTop",
+			icon: <FiChevronUp size={28} />,
+			onClick: handleScrollTop,
+			label: "Ir para o topo",
+			title: "Voltar ao topo da página",
+		},
+		{
+			key: "lang",
+			icon: <FiGlobe size={26} />,
+			label: "Trocar idioma",
+			title: "Alterar idioma do catálogo",
+			submenu: (
+				<div className="bg-white border border-purple-200 rounded-xl shadow-lg p-4 z-50 flex flex-col gap-2 min-w-[180px]">
+					<button
+						className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors w-full text-left ${locale === "pt-br" ? "bg-purple-100 text-purple-800" : "text-gray-700 hover:bg-purple-50"}`}
+						onClick={() => handleLanguageChange("pt-br")}
+						type="button"
+					>
+						<FiGlobe className="text-purple-600" /> Português
+					</button>
+					<button
+						className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors w-full text-left ${locale === "en-us" ? "bg-purple-100 text-purple-800" : "text-gray-700 hover:bg-purple-50"}`}
+						onClick={() => handleLanguageChange("en-us")}
+						type="button"
+					>
+						<FiGlobe className="text-purple-600" /> English
+					</button>
+					<button
+						className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors w-full text-left ${locale === "es-es" ? "bg-purple-100 text-purple-800" : "text-gray-700 hover:bg-purple-50"}`}
+						onClick={() => handleLanguageChange("es-es")}
+						type="button"
+					>
+						<FiGlobe className="text-purple-600" /> Español
+					</button>
+				</div>
+			),
+		},
+		{
+			key: "limit",
+			icon: <FiList size={24} />,
+			label: "Limite",
+			title: "Alterar quantidade de itens por página",
+			submenu: (
+				<div className="bg-white border border-purple-200 rounded-xl shadow-lg p-4 z-50 flex flex-col gap-2 min-w-[140px]">
+					{[4, 8, 12, 16, 20].map((value) => (
+						<button
+							key={value}
+							className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors w-full text-left ${limit === value ? "bg-purple-100 text-purple-800" : "text-gray-700 hover:bg-purple-50"}`}
+							onClick={() => handleChangeLimit(value)}
+							type="button"
+						>
+							{value} itens
+						</button>
+					))}
+				</div>
+			),
+		},
+	];
+
 	const isLoading = initialLoading && !hasInitiallyLoaded.current;
 	const shouldShowSkeletons = isLoading || products.length === 0;
-
 	const hasMoreItems = products.length < totalItems;
 
 	return (
 		<div className="min-h-screen bg-[#fbfbfb]">
-			<div>
+			<div className="pt-24">
 				<Header
 					title={
 						locale === "pt-br"
@@ -111,7 +192,6 @@ const CatalogPage: FC = () => {
 								: "Prueba técnica"
 					}
 					description="Juathan Coelho Duarte"
-					onLanguageChange={handleLanguageChange}
 				/>
 
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
@@ -130,12 +210,13 @@ const CatalogPage: FC = () => {
 						hasMore={hasMoreItems}
 						isLoading={loadingMore}
 						threshold={400}
-						currentLocale={locale}
-						onLanguageChange={handleLanguageChange}
-						onScrollTop={handleScrollTop}
-						onResetPagination={handleResetPagination}
 					/>
 				)}
+
+				<FloatingButton
+					options={optionsFloatingButton}
+					position={{ bottom: 32, right: 32 }}
+				/>
 			</div>
 		</div>
 	);

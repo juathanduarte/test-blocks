@@ -1,6 +1,4 @@
-import FloatingButton from "@/components/FloatingButton";
 import Spinner from "@/components/Spinner";
-import type { TLocale } from "@/models/Locale";
 import { useEffect, useRef, useState } from "react";
 import { FiCheck } from "react-icons/fi";
 
@@ -10,10 +8,6 @@ interface IInfiniteScroll {
 	isLoading: boolean;
 	loadingComponent?: React.ReactNode;
 	threshold?: number;
-	currentLocale?: TLocale;
-	onLanguageChange?: (locale: TLocale) => void;
-	onScrollTop?: () => void;
-	onResetPagination?: () => void;
 }
 
 export default function InfiniteScroll({
@@ -22,10 +16,6 @@ export default function InfiniteScroll({
 	isLoading,
 	loadingComponent,
 	threshold = 300,
-	currentLocale = "pt-br",
-	onLanguageChange,
-	onScrollTop,
-	onResetPagination,
 }: IInfiniteScroll) {
 	const loaderRef = useRef<HTMLDivElement>(null);
 	const [loadCount, setLoadCount] = useState<number>(0);
@@ -82,14 +72,6 @@ export default function InfiniteScroll({
 						Você viu todos os produtos disponíveis
 					</span>
 				</div>
-			)}
-			{onLanguageChange && onScrollTop && onResetPagination && (
-				<FloatingButton
-					currentLocale={currentLocale}
-					onLanguageChange={onLanguageChange}
-					onScrollTop={onScrollTop}
-					onResetPagination={onResetPagination}
-				/>
 			)}
 		</div>
 	);

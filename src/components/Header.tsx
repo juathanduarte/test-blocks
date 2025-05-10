@@ -1,26 +1,34 @@
-import Select from "@/components/Select";
 import blocksLogo from "@assets/blocks_logo.svg";
+import { useEffect, useState } from "react";
 
 interface IHeader {
 	title: string;
 	description?: string;
-	onLanguageChange?: (locale: string) => void;
 }
 
-interface LanguageOption {
-	value: string;
-	label: string;
-}
+const Header = ({ title, description }: IHeader) => {
+	const [visible, setVisible] = useState<boolean>(true);
 
-const languages: LanguageOption[] = [
-	{ value: "pt-br", label: "Português" },
-	{ value: "en-us", label: "English" },
-	{ value: "es-es", label: "Español" },
-];
+	useEffect(() => {
+		window.addEventListener("scroll", handleScroll);
+		return () => window.removeEventListener("scroll", handleScroll);
+	}, []);
 
-const Header = ({ title, description, onLanguageChange }: IHeader) => {
+	const handleScroll = () => {
+		const currentScrollY = window.scrollY;
+		if (currentScrollY <= 0) {
+			setVisible(true);
+		} else {
+			setVisible(false);
+		}
+	};
+
 	return (
-		<div className="bg-[#FFF] border-b border-gray-200">
+		<div
+			className={`bg-[#FFF] border-b border-gray-200 transition-transform duration-300 fixed top-0 left-0 w-full z-40 ${
+				visible ? "translate-y-0" : "-translate-y-full"
+			}`}
+		>
 			<div className="flex justify-between px-12 py-4 w-full items-center">
 				<div className="flex-shrink-0">
 					<img src={blocksLogo} alt="Blocks Logo" className="h-9" />
@@ -29,15 +37,6 @@ const Header = ({ title, description, onLanguageChange }: IHeader) => {
 					<h1 className="text-2xl font-bold text-[#202020]">{title}</h1>
 					<span className="text-gray-500 text-sm">{description}</span>
 				</div>
-				<Select
-					items={languages}
-					onChange={(value) => {
-						console.log("Selected language:", value);
-						if (onLanguageChange) {
-							onLanguageChange(value);
-						}
-					}}
-				/>
 			</div>
 		</div>
 	);
