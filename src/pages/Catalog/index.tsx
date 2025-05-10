@@ -5,7 +5,6 @@ import FloatingButton, {
 import Header from "@/components/Header";
 import ImagePreview from "@/components/ImagePreview";
 import InfiniteScroll from "@/components/InfiniteScroll";
-import Modal from "@/components/Modal";
 import { useToast } from "@/contexts/ToastContext";
 import type { TLocale } from "@/models/Locale";
 import type { IApiResponse, IProduct } from "@models/Product";
@@ -14,7 +13,6 @@ import { type FC, useCallback, useEffect, useRef, useState } from "react";
 import { FiChevronUp, FiGlobe, FiList, FiRefreshCw } from "react-icons/fi";
 import { useLocale } from "../../contexts/LocaleContext";
 import { useTranslation } from "../../hooks/useTranslation";
-import BodyModal from "./components/BodyModal";
 import ProductCard from "./components/ProductCard";
 
 export interface IImageToPreview {
@@ -34,8 +32,6 @@ const CatalogPage: FC = () => {
 	const [scrollY, setScrollY] = useState<number>(0);
 	const { t } = useTranslation(locale);
 	const { showToast } = useToast();
-	const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
-	const [modalOpen, setModalOpen] = useState<boolean>(false);
 	const [imageViewerOpen, setImageViewerOpen] = useState<boolean>(false);
 	const [imageToPreview, setImageToPreview] = useState<IImageToPreview | null>(
 		null,
@@ -137,16 +133,6 @@ const CatalogPage: FC = () => {
 		loadProducts(1, true, locale);
 	}, [handleScrollTop, loadProducts, locale]);
 
-	const handleOpenModal = (product: IProduct) => {
-		setSelectedProduct(product);
-		setModalOpen(true);
-	};
-
-	const handleCloseModal = () => {
-		setModalOpen(false);
-		setTimeout(() => setSelectedProduct(null), 200);
-	};
-
 	const optionsFloatingButton: IOptionsFloatingButton[] = [
 		{
 			key: "reset",
@@ -231,7 +217,6 @@ const CatalogPage: FC = () => {
 									key={product.id}
 									product={product}
 									page={page}
-									onClick={handleOpenModal}
 									onImageClick={() => {
 										setImageToPreview({
 											url: `https://plugin-storage.nyc3.digitaloceanspaces.com/families/images/${product.id}.webp`,
@@ -258,16 +243,6 @@ const CatalogPage: FC = () => {
 					position={{ bottom: 32, right: 32 }}
 				/>
 			</div>
-
-			<Modal open={modalOpen} onClose={handleCloseModal}>
-				{selectedProduct && (
-					<BodyModal
-						selectedProduct={selectedProduct}
-						setImageToPreview={setImageToPreview}
-						setImageViewerOpen={setImageViewerOpen}
-					/>
-				)}
-			</Modal>
 			<ImagePreview
 				open={imageViewerOpen}
 				onClose={() => setImageViewerOpen(false)}
