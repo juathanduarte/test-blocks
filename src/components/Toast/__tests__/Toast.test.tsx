@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
-import { type IToast, ToastList } from ".";
+import { type IToast, ToastList } from "..";
 
 describe("ToastList", () => {
 	const baseToast: IToast = {

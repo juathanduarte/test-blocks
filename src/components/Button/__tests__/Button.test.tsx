@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { FiHome } from "react-icons/fi";
-import Button, { type TButtonVariant } from ".";
+import Button, { type TButtonVariant } from "..";
 
 describe("Button", () => {
 	it("renderiza com o label", () => {

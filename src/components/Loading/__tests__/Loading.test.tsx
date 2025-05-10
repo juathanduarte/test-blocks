@@ -1,8 +1,8 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import Loading from ".";
+import Loading from "..";
 
-jest.mock("../Spinner", () => () => <div data-testid="spinner" />);
+jest.mock("../../Spinner", () => () => <div data-testid="spinner" />);
 
 describe("Loading", () => {
 	it("deve renderizar o spinner e a mensagem padrão", () => {

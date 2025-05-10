@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { FiHome } from "react-icons/fi";
-import FloatingButton, { type IOptionsFloatingButton } from ".";
+import FloatingButton, { type IOptionsFloatingButton } from "..";
 
 describe("FloatingButton", () => {
 	const options: IOptionsFloatingButton[] = [

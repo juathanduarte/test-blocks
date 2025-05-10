@@ -1,8 +1,7 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import Header from ".";
+import Header from "..";
 
-// Mock do logo para evitar erro de importação
 jest.mock("@assets/blocks_logo.svg", () => "logo.svg");
 
 describe("Header", () => {
@@ -26,11 +25,9 @@ describe("Header", () => {
 	it("deve mostrar e esconder o header ao rolar a página", () => {
 		render(<Header title="Título" />);
 		const header = screen.getByRole("banner");
-		// Simula scroll para baixo
 		window.scrollY = 100;
 		window.dispatchEvent(new Event("scroll"));
 		expect(header.className).toContain("-translate-y-full");
-		// Simula scroll para o topo
 		window.scrollY = 0;
 		window.dispatchEvent(new Event("scroll"));
 		expect(header.className).toContain("translate-y-0");

@@ -1,7 +1,7 @@
-import api from "../api";
-import { fetchProducts } from "./apiProducts";
+import api from "../../api";
+import { fetchProducts } from "../apiProducts";
 
-jest.mock("../api");
+jest.mock("../../api");
 
 const mockApi = api as jest.Mocked<typeof api>;
 

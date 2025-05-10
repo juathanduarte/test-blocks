@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ImagePreview from ".";
+import ImagePreview from "..";
 
 const IMAGE_URL = "https://exemplo.com/imagem.jpg";
 const ALT_TEXT = "Imagem de teste";

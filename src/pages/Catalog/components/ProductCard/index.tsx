@@ -108,7 +108,7 @@ const ProductCard: FC<IProductCard> = ({
 									{t("updatedAt")}:{" "}
 									{new Date(
 										product?.updatedAt || product?.createdAt || "",
-									).toLocaleDateString(locale)}
+									).toLocaleDateString(locale as string)}
 								</span>
 							)}
 						</div>

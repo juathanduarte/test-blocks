@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import InfiniteScroll from ".";
+import InfiniteScroll from "..";
 
 jest.mock("../../contexts/LocaleContext", () => ({
 	useLocale: () => ({ locale: "pt" }),
