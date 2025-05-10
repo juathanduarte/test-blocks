@@ -22,7 +22,43 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@pages/*": [
+        "./src/pages/*"
+      ],
+      "@assets/*": [
+        "./src/assets/*"
+      ],
+      "@hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@contexts/*": [
+        "./src/contexts/*"
+      ],
+      "@services/*": [
+        "./src/services/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
+      ],
+      "@models/*": [
+        "./src/models/*"
+      ],
+      "@enums/*": [
+        "./src/enums/*"
+      ],
+      "@helpers/*": [
+        "./src/helpers/*"
+      ]
+    }
   },
   "include": [
     "src/**/*.ts",
