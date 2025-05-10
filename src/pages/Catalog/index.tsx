@@ -26,7 +26,7 @@ const CatalogPage: FC = () => {
 	const [loadingMore, setLoadingMore] = useState<boolean>(false);
 	const [page, setPage] = useState<number>(1);
 	const [totalItems, setTotalItems] = useState<number>(0);
-	const [limit, setLimit] = useState<number>(8);
+	const [limit, setLimit] = useState<number>(10);
 	const { locale, setLocale } = useLocale();
 	const hasInitiallyLoaded = useRef<boolean>(false);
 	const [scrollY, setScrollY] = useState<number>(0);
@@ -101,6 +101,7 @@ const CatalogPage: FC = () => {
 	const handleLanguageChange = useCallback(
 		(newLocale: TLocale) => {
 			if (newLocale !== locale) {
+				handleScrollTop();
 				setLocale(newLocale);
 			}
 		},
@@ -185,7 +186,7 @@ const CatalogPage: FC = () => {
 			title: t("tooltipChangeLimit"),
 			submenu: (
 				<div className="bg-white border border-purple-200 rounded-xl shadow-lg p-4 z-50 flex flex-col gap-2 min-w-[140px]">
-					{[4, 8, 12, 16, 20].map((value) => (
+					{[10, 20, 30, 40, 50].map((value) => (
 						<Button
 							key={value}
 							variant={limit === value ? "default" : "outlined"}
@@ -204,7 +205,7 @@ const CatalogPage: FC = () => {
 
 	return (
 		<div className="min-h-screen bg-[#fbfbfb]">
-			<div className="pt-24">
+			<div className="pt-20">
 				<Header title={t("headerTitle")} description="Juathan Coelho Duarte" />
 
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">

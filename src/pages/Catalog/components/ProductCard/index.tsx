@@ -1,4 +1,3 @@
-import Tooltip from "@components/Tooltip";
 import type { IProduct } from "@models/Product";
 import { motion } from "framer-motion";
 import type { FC } from "react";
@@ -66,7 +65,7 @@ const ProductCard: FC<IProductCard> = ({
 
 	return (
 		<motion.button
-			className="w-full text-left bg-white rounded-2xl overflow-hidden border border-purple-200 hover:border-purple-400 focus:border-purple-500 transition-all duration-300 focus:outline-none group shadow-none hover:shadow-[0_2px_16px_0_rgba(168,85,247,0.10)]"
+			className="w-full text-left bg-white rounded-2xl overflow-hidden border border-purple-200 hover:border-purple-400 focus:border-purple-500 transition-all duration-300 focus:outline-none group shadow-none hover:shadow-[0_2px_16px_0_rgba(168,85,247,0.10)] flex flex-col justify-between h-full"
 			aria-label={loading ? t("loading") : t("seeDetails")}
 			type="button"
 			initial={loading || page <= 1 ? false : { opacity: 0, y: 30 }}
@@ -88,7 +87,7 @@ const ProductCard: FC<IProductCard> = ({
 							</span>
 						)}
 						<div
-							className="relative w-full aspect-[4/3] min-h-[120px] max-h-52 bg-gray-100 rounded-t-2xl overflow-hidden border-b-2 border-purple-100"
+							className="relative w-full h-32 sm:h-52 min-h-[128px] sm:min-h-[208px] max-h-52 bg-gray-100 rounded-t-2xl overflow-hidden border-b-2 border-purple-100"
 							aria-label="Abrir imagem em tela cheia"
 							onClick={handleImageClick}
 							onKeyDown={handleImageKeyDown}
@@ -102,6 +101,14 @@ const ProductCard: FC<IProductCard> = ({
 							{imagePreviewIconOverlay && (
 								<span className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-t-2xl pointer-events-none">
 									<FiZoomIn size={40} className="text-white opacity-90" />
+								</span>
+							)}
+							{!loading && (
+								<span className="absolute right-2 bottom-2 text-[11px] bg-purple-50 text-purple-700 px-2 py-0.5 rounded-full border border-purple-100 font-medium shadow-sm">
+									{t("updatedAt")}:{" "}
+									{new Date(
+										product?.updatedAt || product?.createdAt || "",
+									).toLocaleDateString(locale)}
 								</span>
 							)}
 						</div>
@@ -125,40 +132,39 @@ const ProductCard: FC<IProductCard> = ({
 							)}
 						</div>
 						{product?.details.description && (
-							<p className="text-gray-500 text-sm italic line-clamp-2 h-10">
+							<p className="text-gray-500 text-sm italic line-clamp-2">
 								{product?.details.description}
 							</p>
 						)}
 
-						<div className="flex flex-wrap items-center gap-2 text-xs">
-							<Tooltip
-								content={`${t("brand")}: ${product?.brand.name}${product?.collection ? `  |  ${t("collection")}: ${product?.collection.details.name}` : ""}`}
-							>
-								<span className="flex items-center gap-1 font-medium text-purple-700 bg-purple-50 px-2 py-1 rounded-full border border-purple-200 w-full max-w-full truncate">
-									<FiTag className="w-3 h-3 text-purple-400" title="Marca" />
-									{t("brand")}:{" "}
-									<span className="font-normal text-purple-900 truncate max-w-[6rem]">
-										{product?.brand.name}
-									</span>
-									{product?.collection && (
-										<>
-											<span className="mx-1 text-purple-300">|</span>
-											<FiLayers
-												className="w-3 h-3 text-purple-400"
-												title="Coleção"
-											/>
-											{t("collection")}:{" "}
-											<span className="font-normal text-purple-900 truncate max-w-[6rem]">
-												{product?.collection.details.name}
-											</span>
-										</>
-									)}
+						<div className="flex flex-col gap-0.5 w-full text-xs">
+							<span className="flex items-center gap-1 text-purple-700 font-medium">
+								<FiTag className="w-3 h-3 text-purple-400" title="Marca" />
+								<strong className="font-semibold text-purple-700">
+									{t("brand")}:
+								</strong>
+								<span className="font-normal text-purple-900 truncate">
+									{product?.brand.name}
 								</span>
-							</Tooltip>
+							</span>
+							{product?.collection && (
+								<span className="flex items-center gap-1 text-purple-700 font-medium">
+									<FiLayers
+										className="w-3 h-3 text-purple-400"
+										title="Coleção"
+									/>
+									<strong className="font-semibold text-purple-700">
+										{t("collection")}:
+									</strong>
+									<span className="font-normal text-purple-900 truncate">
+										{product?.collection.details.name}
+									</span>
+								</span>
+							)}
 						</div>
 
 						{product?.finishes && product?.finishes.length > 0 && (
-							<div className="flex flex-col gap-1">
+							<div className="flex flex-col gap-1 flex-1 justify-end">
 								<p className="text-xs text-purple-700 font-semibold flex items-center gap-1">
 									<FiGrid
 										className="w-3 h-3 text-purple-400"
@@ -177,12 +183,6 @@ const ProductCard: FC<IProductCard> = ({
 											</span>
 										))}
 									</div>
-									<span className="text-[11px] bg-purple-50 text-purple-700 px-2 py-0.5 rounded-full border border-purple-100 font-medium ml-auto">
-										{t("updatedAt")}:{" "}
-										{new Date(
-											product?.updatedAt || product?.createdAt || "",
-										).toLocaleDateString(locale)}
-									</span>
 								</div>
 							</div>
 						)}
