@@ -108,15 +108,15 @@ export default function ImagePreview({
 							>
 								<FiDownload size={22} />
 							</button>
+							<button
+								className="bg-black/60 shadow-lg text-white rounded-full p-3 hover:bg-red-600/80 transition-colors duration-200 text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-red-400 z-20"
+								onClick={onClose}
+								aria-label="Fechar visualização"
+								type="button"
+							>
+								<FiX size={24} />
+							</button>
 						</div>
-						<button
-							className="absolute top-[-60px] right-4 bg-black/60 shadow-lg text-white rounded-full p-3 hover:bg-red-600/80 transition-colors duration-200 text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-red-400 z-20"
-							onClick={onClose}
-							aria-label="Fechar visualização"
-							type="button"
-						>
-							<FiX size={24} />
-						</button>
 						<div className="flex items-center justify-center w-full h-[70vh] relative">
 							<motion.img
 								src={imageUrl}
