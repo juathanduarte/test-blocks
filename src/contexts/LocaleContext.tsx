@@ -1,4 +1,3 @@
-import type { SupportedLocale } from "@/hooks/useTranslation";
 import {
 	type ReactNode,
 	createContext,
@@ -6,6 +5,7 @@ import {
 	useEffect,
 	useState,
 } from "react";
+import type { SupportedLocale } from "../hooks/useTranslation";
 
 interface ILocaleContext {
 	locale: SupportedLocale;

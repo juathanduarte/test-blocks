@@ -30,6 +30,22 @@ interface IPositionFloatingButton {
 	right: number;
 }
 
+// Polyfill para Object.entries e Object.fromEntries para ambientes de teste antigos
+function entriesPolyfill(obj: Record<string, unknown>) {
+	const ownProps = Object.keys(obj);
+	let i = ownProps.length;
+	const resArray: [string, unknown][] = new Array(i);
+	while (i--) {
+		resArray[i] = [ownProps[i], obj[ownProps[i]]];
+	}
+	return resArray;
+}
+function fromEntriesPolyfill(entries: [string, unknown][]) {
+	const obj: Record<string, unknown> = {};
+	for (const [k, v] of entries) obj[k] = v;
+	return obj;
+}
+
 export default function FloatingButton({
 	options,
 	position = { bottom: 32, right: 32 },
@@ -46,8 +62,8 @@ export default function FloatingButton({
 		flexDirection: "column",
 		alignItems: "end",
 		gap: "0.75rem",
-		...Object.fromEntries(
-			Object.entries(position).map(([k, v]) => [
+		...fromEntriesPolyfill(
+			entriesPolyfill(position).map(([k, v]) => [
 				k,
 				typeof v === "number" ? `${v}px` : v,
 			]),

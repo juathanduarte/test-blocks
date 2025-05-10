@@ -1,9 +1,9 @@
-import Loading from "@/components/Loading";
-import { useLocale } from "@/contexts/LocaleContext";
-import { getLoadingMessage } from "@/helpers/getLoadingMessage";
-import { useTranslation } from "@/hooks/useTranslation";
 import { useEffect, useRef, useState } from "react";
 import { FiCheck } from "react-icons/fi";
+import { useLocale } from "../../contexts/LocaleContext";
+import { getLoadingMessage } from "../../helpers/getLoadingMessage";
+import { useTranslation } from "../../hooks/useTranslation";
+import Loading from "../Loading";
 
 interface IInfiniteScroll {
 	onLoadMore: () => void;

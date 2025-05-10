@@ -1,5 +1,5 @@
-import blocksLogo from "@assets/blocks_logo.svg";
 import { useEffect, useState } from "react";
+import blocksLogo from "../../assets/blocks_logo.svg";
 
 interface IHeader {
 	title: string;

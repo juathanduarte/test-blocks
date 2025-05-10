@@ -1,8 +1,8 @@
-import { useLocale } from "@/contexts/LocaleContext";
-import { useTranslation } from "@/hooks/useTranslation";
 import type { IProduct } from "@/models/Product";
 import type { IImageToPreview } from "@/pages/Catalog";
 import type { FC } from "react";
+import { useLocale } from "../../../contexts/LocaleContext";
+import { useTranslation } from "../../../hooks/useTranslation";
 
 interface IBodyModal {
 	selectedProduct: IProduct;

@@ -2,13 +2,13 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import InfiniteScroll from ".";
 
-jest.mock("@/contexts/LocaleContext", () => ({
+jest.mock("../../contexts/LocaleContext", () => ({
 	useLocale: () => ({ locale: "pt" }),
 }));
-jest.mock("@/hooks/useTranslation", () => ({
+jest.mock("../../hooks/useTranslation", () => ({
 	useTranslation: () => (key: string) => key,
 }));
-jest.mock("@/helpers/getLoadingMessage", () => ({
+jest.mock("../../helpers/getLoadingMessage", () => ({
 	getLoadingMessage: (count: number) => `Carregando...${count}`,
 }));
 

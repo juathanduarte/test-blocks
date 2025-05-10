@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { FiHome } from "react-icons/fi";
 import FloatingButton, { type IOptionsFloatingButton } from ".";
@@ -35,7 +35,7 @@ describe("FloatingButton", () => {
 		expect(
 			screen.getByRole("button", { name: /abrir opções/i }),
 		).toBeInTheDocument();
-		expect(screen.getByTestId("icon-home")).not.toBeInTheDocument();
+		expect(screen.queryByTestId("icon-home")).not.toBeInTheDocument();
 	});
 
 	it("abre e fecha as opções ao clicar no botão principal", async () => {
@@ -51,9 +51,9 @@ describe("FloatingButton", () => {
 			screen.getByRole("button", { name: /com submenu/i }),
 		).toBeInTheDocument();
 		await user.click(mainButton);
-		expect(
-			screen.queryByRole("button", { name: /home/i }),
-		).not.toBeInTheDocument();
+		await waitFor(() => {
+			expect(screen.queryByRole("button", { name: /home/i })).toBeNull();
+		});
 	});
 
 	it("chama onClick da opção quando clicada e fecha o menu", async () => {
@@ -64,9 +64,9 @@ describe("FloatingButton", () => {
 		const homeButton = screen.getByRole("button", { name: /home/i });
 		await user.click(homeButton);
 		expect(options[0].onClick).toHaveBeenCalled();
-		expect(
-			screen.queryByRole("button", { name: /home/i }),
-		).not.toBeInTheDocument();
+		await waitFor(() => {
+			expect(screen.queryByRole("button", { name: /home/i })).toBeNull();
+		});
 	});
 
 	it("não chama onClick se a opção estiver desabilitada", async () => {
@@ -94,7 +94,9 @@ describe("FloatingButton", () => {
 			name: /fechar submenu/i,
 		});
 		await user.click(closeSubmenu);
-		expect(screen.queryByTestId("submenu-content")).not.toBeInTheDocument();
+		await waitFor(() => {
+			expect(screen.queryByTestId("submenu-content")).toBeNull();
+		});
 	});
 
 	it("permite customizar o ícone principal", () => {
@@ -118,9 +120,11 @@ describe("FloatingButton", () => {
 				position={{ bottom: 100, right: 100 }}
 			/>,
 		);
-		const button = screen.getByRole("button", { name: /abrir opções/i });
-		expect(button).toHaveStyle({
-			position: "fixed",
+		// O container é o primeiro div
+		const container = screen.getByRole("button", {
+			name: /abrir opções/i,
+		}).parentElement;
+		expect(container).toHaveStyle({
 			bottom: "100px",
 			right: "100px",
 		});

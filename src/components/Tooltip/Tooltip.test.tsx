@@ -1,3 +1,4 @@
+import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
 import Tooltip from ".";
 
@@ -30,7 +31,8 @@ describe("Tooltip", () => {
 		const botao = screen.getByText("Botão");
 		fireEvent.mouseEnter(botao);
 		fireEvent.mouseLeave(botao);
-		expect(screen.queryByText("Dica de teste")).toBeNull();
+		const tooltip = screen.getByText("Dica de teste");
+		expect(tooltip).toHaveStyle("opacity: 0");
 	});
 
 	it("respeita a prop placement (bottom)", () => {

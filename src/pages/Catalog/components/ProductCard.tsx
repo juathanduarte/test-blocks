@@ -1,9 +1,9 @@
-import { useLocale } from "@/contexts/LocaleContext";
-import { useTranslation } from "@/hooks/useTranslation";
 import type { IProduct } from "@models/Product";
 import { motion } from "framer-motion";
 import type { FC } from "react";
 import { FiAward, FiZoomIn } from "react-icons/fi";
+import { useLocale } from "../../../contexts/LocaleContext";
+import { useTranslation } from "../../../hooks/useTranslation";
 
 interface IProductCard {
 	product?: IProduct;
